@@ -1,0 +1,66 @@
+  version: '3'
+  services:
+    homeassistant:
+      container_name: home-assistant
+      image: homeassistant/raspberrypi3-homeassistant
+      volumes:
+        - /etc/localtime:/etc/localtime:ro
+        - /config/hass:/config
+      restart: always
+      network_mode: host
+      user: 1001:100
+      depends_on:
+      - deconz 
+
+    deconz:
+      container_name: deconz 
+      image: marthoc/deconz
+      volumes:
+        - /etc/localtime:/etc/localtime:ro
+        - /config/deconz:/root/.local/share/dresden-elektronik/deCONZ
+      devices:
+        - /dev/ttyAMA0
+      restart: always
+      network_mode: host
+      user: 1002:100
+
+    homebridge:
+      container_name: homebridge 
+      image: oznu/homebridge:raspberry-pi
+      volumes:
+        - /etc/localtime:/etc/localtime:ro
+        - /config/homebridge:/homebridge
+      restart: always
+      network_mode: host
+      environment:
+      - PUID=1003
+      - PGID=100
+      - TZ=Americas/New_York
+      - TERMINATE_ON_ERROR=1
+
+    mqtt:
+      container_name: mqtt 
+      image: panuwitp/mosquitto-arm
+      volumes:
+        - /etc/localtime:/etc/localtime:ro
+        - /config/mqtt/config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+        - /config/mqtt/log:/mosquitto/log
+        - /config/mqtt/data:/mosquitto/data
+      restart: always
+      network_mode: bridge
+      user: 1004:100
+      ports:
+      - 1883:1883
+      - 9001:9001
+    
+    nodered:
+      container_name: nodered 
+      image: nodered/node-red-docker:rpi-v8
+      volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /config/nodered/data:/data
+      restart: always
+      network_mode: bridge
+      user: 1005:100
+      ports:
+      - 1880:1880
