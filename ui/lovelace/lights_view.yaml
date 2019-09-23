@@ -1,0 +1,37 @@
+# Specify a tab icon if you want the view tab to be an icon.
+icon: mdi:lightbulb
+# Title of the view. Will be used as the tooltip for tab icon
+title: Lights
+cards:
+  - type: entities
+    entities:
+    - group.stairway_lights
+  - type: custom:group-card
+    card:
+    # Entities card will take a list of entities and show their state.
+      type: entities
+      title: Basement
+    group: group.basement_lights
+
+
+  - type: custom:group-card
+    card:
+    # Entities card will take a list of entities and show their state.
+      type: entities
+      title: First Floor
+    group: group.first_floor_lights
+
+  - type: custom:group-card
+    card:
+    # Entities card will take a list of entities and show their state.
+      type: entities
+      title: Second Floor 
+    group: group.second_floor_lights
+
+  - type: custom:group-card
+    card:
+    # Entities card will take a list of entities and show their state.
+      type: entities
+      title: Third Floor
+    group: group.third_floor_lights
+

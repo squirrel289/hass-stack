@@ -1,0 +1,52 @@
+# View tab title.
+title: Glance
+icon: mdi:home-assistant
+# Optional unique id for direct access /lovelace/${id}
+id: example
+# Optional background (overwrites the global background).
+background: radial-gradient(crimson, skyblue)
+# Each view can have a different theme applied. Theme should be defined in the frontend.
+theme: dark-mode
+# The cards to show on this view.
+cards:
+- type: entity-filter
+  show_empty: false
+  entities:
+  - group.basement_lights
+  - group.first_floor_lights
+  - group.second_floor_lights
+  - group.third_floor_lights
+  - group.stairway_lights
+  state_filter:
+    - 'on'
+  card:
+    type: glance
+    show_state: false
+  # The filter card will filter entities for their state
+- type: entity-filter
+  show_empty: false
+  entities:
+    - device_tracker.melanies_iphone
+    - device_tracker.lemur
+  state_filter:
+    - 'home'
+  card:
+    type: glance
+    title: Who's home
+    show_state: false
+    show_name: false
+
+- type: custom:monster-card
+  card:
+    type: map
+    aspect_ratio: 50%
+  show_empty: false
+  filter:
+    include:
+      - domain: device_tracker
+        options:
+          secondary_info: last-changed
+        attributes:
+          source_type: gps
+    exclude:
+      - state: "home"

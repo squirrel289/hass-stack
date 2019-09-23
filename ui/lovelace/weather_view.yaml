@@ -1,0 +1,7 @@
+  icon: mdi:weather-partlycloudy
+  id: weather
+  title: Weather
+  cards:
+  - type: "custom:weather-card"
+    entity_weather: weather.yweather
+    entity_sun: sun.sun

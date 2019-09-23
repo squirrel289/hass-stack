@@ -1,0 +1,33 @@
+title: Argyle Manor
+# Include external resources
+resources:
+  - url: !resource js/monster-card.js
+    type: js
+  - url: !resource js/kiosk.js
+    type: js
+  - url: !resource js/tracker-card.js
+    type: js
+  - url: !resource js/state-attribute-element.js
+    type: js
+  - url: !resource js/text-element.js
+    type: js
+  - url: !resource js/group-card.js
+    type: js
+  - url: /local/custom_ui/weather-card.js
+    type: js
+  - url: /local/custom_ui/weather-card.css
+    type: css
+  - url: /local/mini-media-player/mini-media-player.js
+    type: js
+
+# Optional background for all views. Check https://developer.mozilla.org/en-US/docs/Web/CSS/background for more examples.
+background: center / cover no-repeat url("/background.png") fixed
+# Exclude entities from "Unused entities" view
+excluded_entities:
+  - weblink.router
+views:
+- !include home_view.yaml
+- !include lights_view.yaml
+- !include weather_view.yaml
+- !include tautulli_view.yaml
+- !include settings_view.yaml

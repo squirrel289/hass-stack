@@ -1,0 +1,22 @@
+# View tab title.
+title: Settings
+icon: mdi:settings
+# Optional unique id for direct access /lovelace/${id}
+id: settings
+# Each view can have a different theme applied. Theme should be defined in the frontend.
+theme: dark-mode
+# The cards to show on this view.
+cards:
+  # The filter card will filter entities for their state
+- type: custom:tracker-card
+  title:
+  trackers:
+  - sensor.custom_card_tracker
+  - sensor.custom_component_tracker
+  - type: custom:monster-card
+  filter:
+    include:
+      entity_id: "sensor.*"
+  card:
+    type: entities
+    title: System Monitor
