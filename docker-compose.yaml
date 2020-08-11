@@ -2,28 +2,18 @@
   services:
     homeassistant:
       container_name: homeassistant
-      image: homeassistant/raspberrypi3-homeassistant
+      image: homeassistant/raspberrypi4-homeassistant
       volumes:
       - /etc/localtime:/etc/localtime:ro
+      #- /config/hass:/config
       - /config/hass:/config
-      restart: always
+      restart: unless-stopped
       network_mode: host
       # user: 1000:100
       depends_on:
       - deconz
-      - homebridge
       devices:
       - /dev/zwave:/dev/zwave
-
-    esphome:
-      image: esphome/esphome-armv7
-      container_name: esphome
-      volumes:
-        - /config/esphome:/config:rw
-        # Use local time for logging timestamps
-        - /etc/localtime:/etc/localtime:ro
-      network_mode: host
-      restart: always
 
     deconz:
       container_name: deconz 
@@ -34,59 +24,14 @@
       devices:
       - /dev/ttyAMA0
       - /dev/ttyUSB0
-      restart: always
-      network_mode: host
-
-#    deconz_int:
-#      container_name: deconz_int
-#      image: marthoc/deconz
-#      volumes:
-#      - /etc/localtime:/etc/localtime:ro
-#      - /config/deconz:/root/.local/share/dresden-elektronik/deCONZ
-#      devices:
-#      #- /dev/ttyAMA0
-#      restart: always
-#      ports:
-#      - 8080:80
-#      - 8443:443
-#
-    homebridge:
-      container_name: homebridge 
-      image: oznu/homebridge:raspberry-pi
-      volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /config/homebridge:/homebridge
-      restart: always
-      network_mode: host
-      environment:
-      - PUID=1003
-      - PGID=100
-      - TZ=Americas/New_York
-      - TERMINATE_ON_ERROR=1
-
-    mqtt:
-      container_name: mqtt 
-      image: panuwitp/mosquitto-arm
-      volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /config/mqtt/config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
-      - /config/mqtt/log:/mosquitto/log
-      - /config/mqtt/data:/mosquitto/data
-      restart: always
-      network_mode: bridge
-      user: 1004:100
-      ports:
-      - 1883:1883
-      - 9001:9001
-    
-    nodered:
-      container_name: nodered 
-      image: nodered/node-red-docker:rpi-v8
-      volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /config/nodered/data:/data
       restart: unless-stopped
-      network_mode: bridge
-      user: 1005:100
-      ports:
-      - 1880:1880
+      network_mode: host
+
+    influxdb:
+      container_name: influxdb
+      image: arm32v7/influxdb:1.8
+      restart: unless-stopped
+      network_mode: host
+      volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /config/influx:/var/lib/influxdb
